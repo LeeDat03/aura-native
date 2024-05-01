@@ -11,9 +11,12 @@ NativeWindStyleSheet.setOutput({
 export default function App() {
   return (
     <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-5xl font-pblack">Aura!</Text>
+      <Text className="text-5xl font-pblack text-red-500">Aura!</Text>
       <StatusBar style="auto" />
-      <Link href="/profile">Go to proifle</Link>
+
+      <Link href="/home" className="text-xl">
+        Go to Home
+      </Link>
     </View>
   );
 }
