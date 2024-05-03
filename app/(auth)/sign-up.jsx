@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -6,8 +6,9 @@ import images from "../../constants/images";
 import FormField from "../../components/form-field";
 
 import CustomButton from "../../components/custom-button";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { createUser } from "../../lib/appwrite";
+import { useGlobalContext } from "../../context/global-provider";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -17,9 +18,25 @@ const SignUp = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setUser, setIsLoggedIn } = useGlobalContext();
 
-  const submit = () => {
-    createUser();
+  const submit = async () => {
+    if (form.username === "" || form.email === "" || form.password === "") {
+      Alert.alert("Error", "Please fill in all the fields");
+    }
+    setIsSubmitting(true);
+
+    try {
+      const result = await createUser(form.email, form.password, form.username);
+      setUser(result);
+      setIsLoggedIn(true);
+
+      router.replace("/home");
+    } catch (err) {
+      Alert.alert("Error", err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -38,7 +55,7 @@ const SignUp = () => {
           <FormField
             title="Username"
             value={form.usernamel}
-            handleChangeText={(e) => setForm({ ...form, email: e })}
+            handleChangeText={(e) => setForm({ ...form, username: e })}
             otherStyles="mt-10"
           />
           <FormField
@@ -56,7 +73,7 @@ const SignUp = () => {
           />
 
           <CustomButton
-            title="Sign In"
+            title="Sign Up"
             handlePress={submit}
             containerStyles="mt-7"
             isLoading={isSubmitting}
