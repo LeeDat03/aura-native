@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import images from "../../constants/images";
@@ -17,7 +17,7 @@ const SignIn = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { setUser, setIsLoggedIn } = useGlobalContext();
+  const { setUser, setIsLoggedIn, user } = useGlobalContext();
 
   const submit = async () => {
     if (form.email === "" || form.password === "") {

@@ -14,10 +14,10 @@ NativeWindStyleSheet.setOutput({
 });
 
 export default function App() {
-  const { isLoading, isLoggedIn } = useGlobalContext();
+  const { user, isLoading } = useGlobalContext();
 
-  if (!isLoading && isLoggedIn) {
-    return <Redirect to="/home" />;
+  if (!isLoading && user) {
+    return <Redirect href="/home" />;
   }
 
   return (
